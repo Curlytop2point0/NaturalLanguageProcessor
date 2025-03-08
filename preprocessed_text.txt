@@ -1,0 +1,6 @@
+r is an amazing language for data analysis!
+i love creating projects in r.
+this project involves natural language processing.
+i am not happy with the results of this analysis.
+this is awful and i am really upset.
+great job! but there is room for improvement.
