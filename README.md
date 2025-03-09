@@ -4,7 +4,7 @@ My name is Maxim Person, and as a software engineer, I strive to deepen my under
 
 The purpose of this software is to preprocess textual data, perform sentiment analysis to determine emotional content, and generate visualizations like word clouds and sentiment bar plots. This tool can analyze any dataset in a CSV format and outputs useful insights in a clear and user-friendly manner.
 
-**Video Demonstration**: PLACE YOUTUBE VIDEO HERE
+**Video Demonstration**: [(https://www.youtube.com/watch?v=L85cqI39laQ)]
 
 ## Development Environment
 
