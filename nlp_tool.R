@@ -26,8 +26,9 @@ read_text_data <- function(file_path) {
 
 # Function for Text Preprocessing
 preprocess_text <- function(text_data) {
-    corpus <- VCorpus(VectorSource(text_data)) # Using VCorpus for better handling
+    corpus <- VCorpus(VectorSource(text_data)) # Create a corpus
     corpus <- tm_map(corpus, content_transformer(tolower)) # Convert to lowercase
+    corpus <- tm_map(corpus, removeWords, stopwords("en")) # Remove stop words
     corpus <- tm_map(corpus, stripWhitespace) # Remove extra whitespace
     return(corpus)
 }
@@ -50,6 +51,8 @@ generate_wordcloud <- function(corpus) {
         return(NULL)
     }
     word_freq <- sort(rowSums(word_matrix), decreasing = TRUE)
+    # Reset graphics device for word cloud
+    x11() # Ensures a new graphics window is opened (or use windows() on Windows systems)
     # Generate Word Cloud
     wordcloud(
         words = names(word_freq), # Words
@@ -68,6 +71,9 @@ create_sentiment_plot <- function(sentiments) {
 
     # Adjust graphical parameters to increase bottom margin
     old_par <- par(mar = c(8, 4, 4, 2) + 0.1) # Further increased bottom margin for x-axis labels
+
+    # Reset graphics device for sentiment plot
+    x11() # Ensures a new graphics window is opened (or use windows() on Windows systems)
 
     # Create a bar plot
     barplot(
@@ -113,14 +119,10 @@ print(sentiment_scores)
 
 # Generate Word Cloud
 cat("\nGenerating word cloud...\n")
-dev.off() # Ensure no lingering graphics devices interfere
-if (!is.null(generate_wordcloud(processed_corpus))) {
-    cat("Word cloud generated successfully.\n")
-}
+generate_wordcloud(processed_corpus)
 
 # Generate Sentiment Plot
 cat("\nCreating sentiment plot...\n")
-dev.off() # Close previous graphics device before generating the plot
 create_sentiment_plot(sentiment_scores)
 
 # Save Outputs
@@ -141,10 +143,7 @@ repeat {
         text_data <- read_text_data(file_path)
         processed_corpus <- preprocess_text(text_data)
         sentiment_scores <- analyze_sentiment(processed_corpus)
-        dev.off() # Reset graphics before generating visuals
-        if (!is.null(generate_wordcloud(processed_corpus))) {
-            cat("Word cloud generated successfully.\n")
-        }
+        generate_wordcloud(processed_corpus)
         create_sentiment_plot(sentiment_scores)
         save_outputs(preprocessed_text, sentiment_scores)
     } else {
